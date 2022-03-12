@@ -17,10 +17,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServeDto implements DtoAble<Serve> {
     private String id;
-    @NotNull(message = "Number of serving is mandatory")
-    @Min(value = 1, message = "Minimum serving is one")
+    @NotNull(message = "Invalid target serving")
+    @Min(value = 1, message = "Target serving minimum 1")
     private Integer nServing;
-    @NotNull(message = "Recipe ID is mandatory")
+    @NotNull(message = "Invalid recipe id")
     private Long recipeId;
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String reaction;

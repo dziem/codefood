@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class CompleteStepForm {
-    @NotNull
+    @NotNull(message = "stepOrder is required")
     private Integer stepOrder;
 }

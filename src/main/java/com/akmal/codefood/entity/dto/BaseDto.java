@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 public abstract class BaseDto<E> implements DtoAble<E> {
     private Long id;
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "name is required")
     private String name;
     private Date createdAt;
     private Date updatedAt;

@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private Long id;
-    @NotBlank(message = "Username is mandatory")
+    @NotBlank(message = "username is required")
     @Email(message = "Invalid email format")
     private String username;
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(message = "password is required")
     private String password;
 }

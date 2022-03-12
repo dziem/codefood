@@ -22,14 +22,14 @@ public class RecipeDto extends BaseDto<Recipe> {
     private CategoryDto recipeCategory;
     @NotNull(message = "Recipe category ID is mandatory")
     private Long recipeCategoryId;
-    @NotBlank(message = "Image URL is mandatory")
+    @NotBlank(message = "image is required")
     private String image;
     private Long nReactionLike;
     private Long nReactionNeutral;
     private Long nReactionDislike;
-    @NotNull(message = "Number of serving is mandatory")
+    @NotNull(message = "Invalid target serving")
     private Integer nServing;
-    @NotEmpty(message = "Steps are mandatory")
+    @NotEmpty(message = "steps is required")
     private List<StepDto> steps;
     @NotEmpty(message = "Ingredients are is mandatory")
     private List<IngredientDto> ingredientsPerServing;

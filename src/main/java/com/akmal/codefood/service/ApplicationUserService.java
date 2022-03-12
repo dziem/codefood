@@ -37,7 +37,7 @@ public class ApplicationUserService {
             throw new BadRequestException("username " + userDto.getUsername() + " already registered");
         }
         if (userDto.getPassword().length() < 6) {
-            throw new BadRequestException("Password must be at least 6 characters");
+            throw new BadRequestException("password minimum 6 characters");
         }
         BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
         ApplicationUser applicationUser = new ApplicationUser();
