@@ -15,6 +15,8 @@ public class CategoryService implements CrudService<CategoryDto> {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    private String entityName = "Recipe Category";
+
     public List<CategoryDto> list() {
         List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
         List<CategoryDto> categoryDtos = new ArrayList<>();
@@ -27,7 +29,7 @@ public class CategoryService implements CrudService<CategoryDto> {
     }
 
     public Category getEntity(Long id) {
-        return categoryRepository.getById(id);
+        return categoryRepository.getById(id, this.entityName);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class CategoryService implements CrudService<CategoryDto> {
 
     @Override
     public CategoryDto update(Long id, CategoryDto dto) {
-        Category category = categoryRepository.getById(id);
+        Category category = categoryRepository.getById(id, this.entityName);
         dto.fromDto(category);
         categoryRepository.save(category);
         dto.toDto(category);
@@ -49,7 +51,7 @@ public class CategoryService implements CrudService<CategoryDto> {
 
     @Override
     public void delete(Long id) {
-        Category category = categoryRepository.getById(id);
+        Category category = categoryRepository.getById(id, this.entityName);
         categoryRepository.delete(category);
     }
 }

@@ -5,5 +5,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface OptionalHandlingRepository<T, ID> extends JpaRepository<T, ID> {
-    T getById(ID var1);
+    T getById(ID var1, String entityName);
 }

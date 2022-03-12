@@ -32,6 +32,8 @@ public class RecipeService implements CrudService<RecipeDto> {
     @Autowired
     private IngredientService ingredientService;
 
+    private String entityName = "Recipe";
+
     public RecipeListDto list(Pageable pageable, RecipeSearchForm searchForm) {
         RecipeSpecification recipeSpecification = RecipeSpecification.create(searchForm);
         Page<Recipe> recipes = recipeRepository.findAll(recipeSpecification, pageable);
@@ -49,11 +51,11 @@ public class RecipeService implements CrudService<RecipeDto> {
     }
 
     public Recipe getById(Long id) {
-        return recipeRepository.getById(id);
+        return recipeRepository.getById(id, this.entityName);
     }
 
     public RecipeDto detailIngredients(Long id) {
-        Recipe recipe = recipeRepository.getById(id);
+        Recipe recipe = recipeRepository.getById(id, this.entityName);
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.toDto(recipe);
         recipeDto.setSteps(null);
@@ -61,7 +63,7 @@ public class RecipeService implements CrudService<RecipeDto> {
     }
 
     public List<StepDto> detailSteps(Long id) {
-        Recipe recipe = recipeRepository.getById(id);
+        Recipe recipe = recipeRepository.getById(id, this.entityName);
         List<StepDto> stepDtos = stepService.listByRecipe(recipe);
         return stepDtos;
     }
@@ -83,7 +85,7 @@ public class RecipeService implements CrudService<RecipeDto> {
     @Transactional
     @Override
     public RecipeDto update(Long id, RecipeDto dto) {
-        Recipe recipe = recipeRepository.getById(id);
+        Recipe recipe = recipeRepository.getById(id, this.entityName);
         dto.fromDto(recipe);
         recipeRepository.save(recipe);
         stepService.bulkUpdate(recipe, dto);
@@ -93,7 +95,7 @@ public class RecipeService implements CrudService<RecipeDto> {
 
     @Transactional
     public void updateReaction(Long id, String reaction) {
-        Recipe recipe = recipeRepository.getById(id);
+        Recipe recipe = recipeRepository.getById(id, this.entityName);
         if (reaction.equals("like")) {
             recipe.setNReactionLike(recipe.getNReactionLike() + 1);
         } else if (reaction.equals("neutral")) {
@@ -106,7 +108,7 @@ public class RecipeService implements CrudService<RecipeDto> {
 
     @Override
     public void delete(Long id) {
-        Recipe recipe = recipeRepository.getById(id);
+        Recipe recipe = recipeRepository.getById(id, this.entityName);
         recipeRepository.delete(recipe);
     }
 }

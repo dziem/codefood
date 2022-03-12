@@ -35,6 +35,8 @@ public class ServeService implements CrudService<ServeDto> {
     @Autowired
     private ApplicationUserService userService;
 
+    private String entityName = "Serve history";
+
     public ServeListDto list(Pageable pageable, ServeSearchForm searchForm) {
         ServeSpecification specification = ServeSpecification.create(searchForm);
         Page<Serve> serves = serveRepository.findAll(specification, pageable);
@@ -56,14 +58,14 @@ public class ServeService implements CrudService<ServeDto> {
     }
 
     public ServeDto detail(String id) {
-        Serve serve = serveRepository.getById(id);
+        Serve serve = serveRepository.getById(id, this.entityName);
         ServeDto serveDto = new ServeDto();
         serveDto.toDto(serve);
         return serveDto;
     }
 
     public ServeDto completeStep(String id, Integer stepOrder) {
-        Serve serve = serveRepository.getById(id);
+        Serve serve = serveRepository.getById(id, this.entityName);
         validateUser(serve.getUser().getId());
         if (stepOrder > serve.getRecipe().getSteps().size() || ((stepOrder - serve.getNStepDone()) != 1)) {
             throw new BadRequestException("Invalid step.");
@@ -81,7 +83,7 @@ public class ServeService implements CrudService<ServeDto> {
         if (!reactions.contains(reaction)) {
             throw new BadRequestException("Invalid reaction.");
         }
-        Serve serve = serveRepository.getById(id);
+        Serve serve = serveRepository.getById(id, this.entityName);
         if (serve.getNStepDone() != serve.getRecipe().getSteps().size()) {
             throw new BadRequestException("Complete recipe first");
         }

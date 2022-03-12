@@ -13,10 +13,10 @@ public class OptionalHandlingRepositoryImpl<T, ID> extends SimpleJpaRepository<T
         super(entityInformation, entityManager);
     }
 
-    public T getById(ID id) {
+    public T getById(ID id, String entityName) {
         Optional<T> t = findById(id);
         if (!t.isPresent()) {
-            throw new NoSuchElementException("No value present for ID: " + id);
+            throw new NoSuchElementException(entityName + " with id " + id + " not found");
         }
         return t.get();
     }
