@@ -20,18 +20,18 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeDto extends BaseDto<Recipe> {
     private CategoryDto recipeCategory;
-    @NotNull(message = "Recipe category ID is mandatory")
+    @NotNull(message = "recipeCategoryId is required")
     private Long recipeCategoryId;
     @NotBlank(message = "image is required")
     private String image;
     private Long nReactionLike;
     private Long nReactionNeutral;
     private Long nReactionDislike;
-    @NotNull(message = "Invalid target serving")
+    @NotNull(message = "nServing is required")
     private Integer nServing;
     @NotEmpty(message = "steps is required")
     private List<StepDto> steps;
-    @NotEmpty(message = "Ingredients are is mandatory")
+    @NotEmpty(message = "ingredientsPerServing is required")
     private List<IngredientDto> ingredientsPerServing;
 
     @Override
@@ -51,7 +51,7 @@ public class RecipeDto extends BaseDto<Recipe> {
         this.setId(entity.getId());
         this.setNReactionLike(entity.getNReactionLike());
         this.setNReactionNeutral(entity.getNReactionNeutral());
-        this.setNReactionDislike(getNReactionDislike());
+        this.setNReactionDislike(entity.getNReactionDislike());
         this.fillRecipe(entity);
         this.setCreatedAt(entity.getCreatedAt());
         entity.setUpdatedAt(new Date());

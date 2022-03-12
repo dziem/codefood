@@ -1,8 +1,13 @@
 package com.akmal.codefood.security;
 
+import com.akmal.codefood.api.CommonRs;
+import com.akmal.codefood.exception.BadRequestException;
 import com.akmal.codefood.util.JWTUtil;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +35,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if(authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")){
             String jwt = authHeader.substring(7);
             if (jwt == null || jwt.isBlank()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
+                unauthorizedResponse(response);
             } else {
                 try{
                     String username = jwtUtil.validateTokenAndRetrieveSubject(jwt);
@@ -41,11 +46,20 @@ public class JWTFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 }catch(JWTVerificationException exc){
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+                    unauthorizedResponse(response);
                 }
             }
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void unauthorizedResponse(HttpServletResponse response) throws ServletException, IOException {
+        CommonRs responseObj = new CommonRs(false, "Unauthorized");
+        String json = new ObjectMapper().writeValueAsString(responseObj);
+        response.setContentType("application/json");
+        response.setStatus(401);
+        response.getWriter().write(json);
+        response.flushBuffer();
     }
 }

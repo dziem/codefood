@@ -7,6 +7,7 @@ import com.akmal.codefood.exception.BadRequestException;
 import com.akmal.codefood.repository.ApplicationUserRepository;
 import com.akmal.codefood.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -66,7 +67,7 @@ public class ApplicationUserService {
             return new AuthToken(token);
         } catch (AuthenticationException authExc){
             failedLogin(form.getUsername());
-            throw new RuntimeException("Invalid Login Credentials");
+            throw new BadRequestException("Invalid username or Password", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -86,14 +87,14 @@ public class ApplicationUserService {
                 } else {
                     lock(user);
                     throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                            + " It will be unlocked after 1 minute.");
+                            + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
                 }
             } else {
                 if (unlockWhenTimeExpired(user)) {
                     throw new BadRequestException("Your account has been unlocked. Please try to login again.");
                 }
                 throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                        + " It will be unlocked after 1 minute.");
+                        + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
             }
         }
     }
@@ -103,7 +104,7 @@ public class ApplicationUserService {
         unlockWhenTimeExpired(user);
         if (user.getLockTime() != null) {
             throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                    + " It will be unlocked after 1 minute.");
+                    + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
         }
         if (user.getFailedAttempt() == null) {
             user.setFailedAttempt(0);

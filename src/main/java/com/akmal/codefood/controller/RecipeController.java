@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public class RecipeController extends BaseController {
 
     @PostMapping
     public ResponseEntity<Object> create(@Valid @RequestBody RecipeDto form) {
-        return ok(recipeService.create(form));
+        return ok(recipeService.create(form), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

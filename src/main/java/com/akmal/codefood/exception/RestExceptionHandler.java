@@ -26,7 +26,7 @@ public class RestExceptionHandler {
                     HttpStatus.NOT_FOUND);
         else if (ex instanceof BadRequestException)
             return new ResponseEntity<CommonRs>(new CommonRs(false, ex.getMessage()),
-                    HttpStatus.BAD_REQUEST);
+                    ((BadRequestException) ex).getHttpStatus());
         else if (ex instanceof UnauthorizedException)
             return new ResponseEntity<CommonRs>(new CommonRs(false, ex.getMessage()),
                     HttpStatus.UNAUTHORIZED);

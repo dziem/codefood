@@ -41,7 +41,7 @@ public class ServeDto implements DtoAble<Serve> {
         serve.setNServing(this.getNServing());
         serve.setCreatedAt(new Date());
         serve.setUpdatedAt(new Date());
-        serve.setNStepDone(0);
+        serve.setNStepDone(1);
         return serve;
     }
 

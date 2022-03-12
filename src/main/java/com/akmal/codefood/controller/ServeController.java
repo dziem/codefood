@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,7 +72,7 @@ public class ServeController extends BaseController {
     @Secured("ROLE_USER")
     @PostMapping
     public ResponseEntity<Object> start(@Valid @RequestBody ServeDto form) {
-        return ok(serveService.create(form));
+        return ok(serveService.create(form), HttpStatus.CREATED);
     }
 
     @Secured("ROLE_USER")

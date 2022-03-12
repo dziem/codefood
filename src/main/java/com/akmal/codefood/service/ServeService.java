@@ -14,6 +14,7 @@ import com.akmal.codefood.repository.specification.ServeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -67,7 +68,10 @@ public class ServeService implements CrudService<ServeDto> {
     public ServeDto completeStep(String id, Integer stepOrder) {
         Serve serve = serveRepository.getById(id, this.entityName);
         validateUser(serve.getUser().getId());
-        if (stepOrder > serve.getRecipe().getSteps().size() || ((stepOrder - serve.getNStepDone()) != 1)) {
+        if (((stepOrder - serve.getNStepDone()) != 1)) {
+            throw new BadRequestException("Some steps before " + stepOrder +" is not done yet");
+        }
+        if (stepOrder > serve.getRecipe().getSteps().size()) {
             throw new BadRequestException("Invalid step.");
         }
         serve.setNStepDone(stepOrder);
@@ -100,7 +104,7 @@ public class ServeService implements CrudService<ServeDto> {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUser user = userService.getByUsername(username);
         if (user != null && userId != user.getId()) {
-            throw new BadRequestException("Invalid serve");
+            throw new BadRequestException("Forbidden", HttpStatus.FORBIDDEN);
         }
     }
 

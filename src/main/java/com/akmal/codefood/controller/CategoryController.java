@@ -4,6 +4,7 @@ import com.akmal.codefood.api.EmptyJsonResponse;
 import com.akmal.codefood.entity.dto.CategoryDto;
 import com.akmal.codefood.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class CategoryController extends BaseController {
 
     @PostMapping
     public ResponseEntity<Object> create(@Valid @RequestBody CategoryDto form) {
-        return ok(categoryService.create(form));
+        return ok(categoryService.create(form), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

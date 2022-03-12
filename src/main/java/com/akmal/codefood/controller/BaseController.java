@@ -13,6 +13,10 @@ public class BaseController {
         return new ResponseEntity<>(new CommonRs(true, "success", data), HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> ok(Object data, HttpStatus httpStatus) {
+        return new ResponseEntity<>(new CommonRs(true, "success", data), httpStatus);
+    }
+
     public ResponseEntity<Object> ok() {
         return new ResponseEntity<>(new CommonRs(true, "success"), HttpStatus.OK);
     }
