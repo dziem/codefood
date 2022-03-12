@@ -86,15 +86,13 @@ public class ApplicationUserService {
                     increaseFailedAttempts(user);
                 } else {
                     lock(user);
-                    throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                            + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
+                    throw new BadRequestException("Too many invalid login, please wait for 1 minute", HttpStatus.FORBIDDEN);
                 }
             } else {
                 if (unlockWhenTimeExpired(user)) {
                     throw new BadRequestException("Your account has been unlocked. Please try to login again.");
                 }
-                throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                        + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
+                throw new BadRequestException("Too many invalid login, please wait for 1 minute", HttpStatus.FORBIDDEN);
             }
         }
     }
@@ -103,8 +101,7 @@ public class ApplicationUserService {
         ApplicationUser user = getByUsername(username);
         unlockWhenTimeExpired(user);
         if (user.getLockTime() != null) {
-            throw new BadRequestException("Your account has been locked due to 3 failed attempts."
-                    + " It will be unlocked after 1 minute.", HttpStatus.FORBIDDEN);
+            throw new BadRequestException("Too many invalid login, please wait for 1 minute.", HttpStatus.FORBIDDEN);
         }
         if (user.getFailedAttempt() == null) {
             user.setFailedAttempt(0);

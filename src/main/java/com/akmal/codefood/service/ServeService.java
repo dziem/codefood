@@ -85,7 +85,7 @@ public class ServeService implements CrudService<ServeDto> {
     public ServeDto sendReaction(String id, String reaction) {
         List<String> reactions = Arrays.asList("like", "neutral", "dislike");
         if (!reactions.contains(reaction)) {
-            throw new BadRequestException("Invalid reaction.");
+            throw new BadRequestException("reaction is invalid");
         }
         Serve serve = serveRepository.getById(id, this.entityName);
         if (serve.getNStepDone() != serve.getRecipe().getSteps().size()) {
