@@ -105,6 +105,9 @@ public class ApplicationUserService {
             throw new BadRequestException("Your account has been locked due to 3 failed attempts."
                     + " It will be unlocked after 1 minute.");
         }
+        if (user.getFailedAttempt() == null) {
+            user.setFailedAttempt(0);
+        }
         if (user.getFailedAttempt() > 0) {
             resetFailedAttempts(user);
         }
