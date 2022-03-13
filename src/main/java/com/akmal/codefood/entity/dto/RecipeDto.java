@@ -5,6 +5,7 @@ import com.akmal.codefood.entity.Ingredient;
 import com.akmal.codefood.entity.Recipe;
 import com.akmal.codefood.entity.Step;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,8 +25,11 @@ public class RecipeDto extends BaseDto<Recipe> {
     private Long recipeCategoryId;
     @NotBlank(message = "image is required")
     private String image;
+    @JsonProperty("nReactionLike")
     private Long nReactionLike;
+    @JsonProperty("nReactionNeutral")
     private Long nReactionNeutral;
+    @JsonProperty("nReactionDislike")
     private Long nReactionDislike;
     @NotNull(message = "nServing is required")
     private Integer nServing;
@@ -74,6 +78,8 @@ public class RecipeDto extends BaseDto<Recipe> {
         for (Step step: recipe.getSteps()) {
             StepDto stepDto = new StepDto();
             stepDto.toDto(step);
+            stepDto.setId(step.getId());
+            stepDto.setRecipeId(recipe.getId());
             stepDtos.add(stepDto);
         }
         this.setSteps(stepDtos);

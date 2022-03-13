@@ -30,6 +30,6 @@ public class IngredientDto implements DtoAble<Ingredient> {
     public void toDto(Ingredient entity) {
         this.setItem(entity.getItem());
         this.setUnit(entity.getUnit());
-        this.setValue(getValue());
+        this.setValue(entity.getValue());
     }
 }

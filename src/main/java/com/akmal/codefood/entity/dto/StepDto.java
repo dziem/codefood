@@ -17,6 +17,8 @@ public class StepDto implements DtoAble<Step> {
     @NotBlank(message = "Step description is mandatory")
     private String description;
     private Boolean done;
+    private Long id;
+    private Long recipeId;
 
     @Override
     public Step fromDto() {
