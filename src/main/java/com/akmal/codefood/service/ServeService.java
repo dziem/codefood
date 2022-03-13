@@ -69,7 +69,7 @@ public class ServeService implements CrudService<ServeDto> {
         Serve serve = serveRepository.getById(id, this.entityName);
         validateUser(serve.getUser().getId());
         if (((stepOrder - serve.getNStepDone()) != 1)) {
-            throw new BadRequestException("Some steps before " + stepOrder +" is not done yet");
+            throw new BadRequestException("Some steps before " + stepOrder +" is not done yet", HttpStatus.CONFLICT);
         }
         if (stepOrder > serve.getRecipe().getSteps().size()) {
             throw new BadRequestException("Invalid step.");

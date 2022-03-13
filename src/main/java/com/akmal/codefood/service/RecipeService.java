@@ -79,6 +79,7 @@ public class RecipeService implements CrudService<RecipeDto> {
         List<Ingredient> ingredients = ingredientService.bulkCreate(recipe, dto);
         recipe.setIngredients(ingredients);
         dto.toDto(recipe);
+        dto.setRecipeCategory(null);
         return dto;
     }
 

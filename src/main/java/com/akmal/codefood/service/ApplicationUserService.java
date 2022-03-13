@@ -101,7 +101,7 @@ public class ApplicationUserService {
         ApplicationUser user = getByUsername(username);
         unlockWhenTimeExpired(user);
         if (user.getLockTime() != null) {
-            throw new BadRequestException("Too many invalid login, please wait for 1 minute.", HttpStatus.FORBIDDEN);
+            throw new BadRequestException("Too many invalid login, please wait for 1 minute", HttpStatus.FORBIDDEN);
         }
         if (user.getFailedAttempt() == null) {
             user.setFailedAttempt(0);
